@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--<classPathEntry location="D:\java\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>-->
+    <context id="my" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="forceBigDecimals" value="false"/>
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <!--覆盖生成XML文件-->
+        <!--<plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />-->
+        <!-- 不生成注释 -->
+        <commentGenerator type="com.wowokuaiyun.driverapiservermicrosrv.config.MyCommentGenerator">
+            <!--&lt;!&ndash; 是否生成注释代时间戳&ndash;&gt;-->
+            <!--<property name="suppressDate" value="false"/>-->
+            <!--&lt;!&ndash; 是否取消注释 &ndash;&gt;-->
+            <!--<property name="suppressAllComments" value="true"/>-->
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:8066/TESTDB" userId="root"
+                        password="123456"/>
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="com.wowokuaiyun.driverapiservermicrosrv.entity"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <property name="rootClass" value="com.wowokuaiyun.driverapiservermicrosrv.base.BaseEntity"/>
+        </javaModelGenerator>
+        <!--生成映射文件xml存放位置-->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--生成Dao类存放位置-->
+        <javaClientGenerator targetPackage="com.wowokuaiyun.driverapiservermicrosrv.dao"
+                             targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="wo_comments" domainObjectName="Comment">
+            <!--<columnRenamingRule searchString="^D_"
+                                replaceString=""/>-->
+        </table>
+    </context>
+</generatorConfiguration>
