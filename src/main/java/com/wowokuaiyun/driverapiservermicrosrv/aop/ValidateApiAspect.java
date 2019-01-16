@@ -1,15 +1,22 @@
 package com.wowokuaiyun.driverapiservermicrosrv.aop;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.wowokuaiyun.driverapiservermicrosrv.base.ResultData;
+import com.wowokuaiyun.driverapiservermicrosrv.entity.Driver;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 拦截请求中的appId进行判断
@@ -23,9 +30,26 @@ public class ValidateApiAspect {
     private Logger log = Logger.getLogger(ValidateApiAspect.class);
     @Value("${spring.api.checkappid}")
     private String checkAppId;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Before("@annotation(com.wowokuaiyun.driverapiservermicrosrv.aop.ValidateApi)")
     public void checkPermission(JoinPoint joinPoint) throws Exception {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        String[] split = authorization.split(" ");
+        log.info("token:" + split[1]);
+        String token = split[1];
+        log.info("移动端请求token:" + token);
+        Map map = (Map) redisTemplate.opsForValue().get("token2DriverMap");
+        JSONObject object = (JSONObject) map.get(token);
+        Driver driver = JSON.toJavaObject(object, Driver.class);
+        if (driver == null) {
+            log.info("验证不通过");
+            throw new Exception("没有权限");
+        }
+
         String methodName = joinPoint.getSignature().getName();
         Object target = joinPoint.getTarget();
         Method method = getMethodByClassAndName(target.getClass(), methodName);    //得到拦截的方法
@@ -37,9 +61,9 @@ public class ValidateApiAspect {
         log.info("请求参数::" + request);
         ResultData resultData = JSON.parseObject(request, ResultData.class);
         String appId = resultData.getApp_id();
-        String[] split = checkAppId.split(",");
+        String[] appIdSplit = checkAppId.split(",");
         boolean contains = false;
-        for (String s : split) {
+        for (String s : appIdSplit) {
             if (appId.equals(s)) {
                 contains = true;
             }
