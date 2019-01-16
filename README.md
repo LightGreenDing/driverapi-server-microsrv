@@ -15,29 +15,28 @@ com.wowokuaiyun.driverapiservermicrosrv
 - - config   //配置
 - - controller   //测试控制器
 - - dao   //基础服务dao
-- - model //实体数据
+- - entity //实体数据
+- - exception//异常处理类
+- - request  //请求参数封装
 - - service  //服务接口
 - - - impl //服务接口实现类
 - - servlet //Hprose servlet
+- - utils //工具类
 - resources //配置文件
 - - mapper //mapper xml文件
 #### 主要方法及功能：
 
 方法名| 功能 |  请求参数格式(data中的数据) |
 | ------ | ------ | ------   
-findlistbyappraiser | 通过评论人ID获取评论 | {"page":"0","size":"10","id":"1"}
-findlistbyevaluated | 通过被评论人ID获取评论 |{"page":"0","size":"10","id":"2"}
-findlistbyorder | 通过订单号获取评论 | {"page":"0","size":"10","id":"1"}
-create | 创建评论 | {"orderNo":"1","appraiser":"2","evaluated":"","content":"测试star的默认值","star":"3"}
-delete | 通过评论id删除评论 | {id":"1"}
+sendSms | 调用发送验证码接口 | {"mobile":17781695050}
+loginAuth | 登录验证 |{"username":"17777777777","code":"491811"}
+getDriverInfo | 通过司机ID获取司机信息 | {"id":"1081467587570831360"}
 传值以及返回值都是json字符串格式，请求json格式示例：
 
 ```
 {
 	"data": {
-		"page": "0",
-		"size": "10",
-		"id":"1"
+		"mobile": "17781695050"
 	},
 	"app_id": "ANDROID_SHIPPER"
 }

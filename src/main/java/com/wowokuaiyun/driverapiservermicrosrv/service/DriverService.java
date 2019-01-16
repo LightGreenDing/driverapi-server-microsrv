@@ -15,7 +15,7 @@ public interface DriverService {
     String sendSms(String smsJson);
 
     /**
-     * 发送短信
+     * 登录验证
      *
      * @param loginAuthJson 请求数据
      * @return json字符串
@@ -23,7 +23,7 @@ public interface DriverService {
     String loginAuth(String loginAuthJson);
 
     /**
-     * 发送短信
+     * 通过司机ID获取司机信息
      *
      * @param driverJson 请求数据
      * @return json字符串
