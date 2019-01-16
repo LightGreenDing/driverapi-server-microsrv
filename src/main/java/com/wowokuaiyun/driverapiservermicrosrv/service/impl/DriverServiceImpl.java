@@ -127,8 +127,8 @@ public class DriverServiceImpl extends BaseService implements DriverService {
         token = MD5Util.MD5(loginRequet.getUsername() + loginRequet.getCode() + System.currentTimeMillis());
         token2DriverMap.put(token, driver);
         driver2TokenMap.put(loginRequet.getUsername(), token);
-        logger.info("目前有【" + driver2TokenMap.size() + "】个用户");
-        redisTemplate.opsForValue().set("token2                                                                                                                   DriverMap", token2DriverMap);
+        logger.info("目前有【" + driver2TokenMap.size() + "】个用户在线");
+        redisTemplate.opsForValue().set("token2DriverMap", token2DriverMap);
         redisTemplate.opsForValue().set("driver2TokenMap", driver2TokenMap);
 
         //登陆成功以后删除掉验证码 下次登录重新生成验证码
